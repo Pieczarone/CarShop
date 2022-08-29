@@ -1,12 +1,21 @@
 <!DOCTYPE html>
-<html lang="en"xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
 <body>
-<div>
-    <h2 th:text="#{index.title}"></h2>
-</div>
+    <div>
+        <h1>Form</h1>
+        <form action="#" th:action="@{/carform}" th:object="${car}" method="post">
+            <p>Make: <input type="text" th:field="*{make}" /></p>
+            <p>Registration: <input type="text" th:field="*{registration}"/></p>
+            <p>Description: <input type="text" th:field="*{description}"/></p>
+            <p>Year: <input type="number" th:field="*{year}"/></p>
+            <p>Color: <input type="text" th:field="*{color}"/></p>
+            <p>Arrive date: <input type="date" th:field="*{arriveDate}"/></p>
+            <p><input type="submit" value="Submit"/><input type="reset" value="Reset"/></p>
+        </form>
+    </div>
 </body>
 </html>

@@ -11,11 +11,15 @@ import java.util.List;
 
 public class JsonFileOperations {
 
+
     private static File path = new File("src/main/resources/static/car.json");
     private static ObjectMapper mapper = new ObjectMapper();
     private static TypeReference<List<Car>> typeReference = new TypeReference<List<Car>>() {};
 
-    private List<Car> readIntoList() {
+    public JsonFileOperations() {
+    }
+
+    public List<Car> readIntoList() {
         List<Car> cars = new ArrayList<Car>();
         try {
             InputStream inputStream = new FileInputStream(path);
@@ -35,7 +39,7 @@ public class JsonFileOperations {
         }
         return cars;
     }
-    private void write(Car car){
+    public void write(Car car){
         try {
             InputStream inputStream = new FileInputStream(path);
             List<Car> cars = mapper.readValue(inputStream, typeReference);

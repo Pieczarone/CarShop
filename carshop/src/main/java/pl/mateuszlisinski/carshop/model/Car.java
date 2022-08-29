@@ -31,8 +31,10 @@ public class Car {
         this.isFixed = false;
     }
     public Car(){
-        super();
+        this.id = UUID.randomUUID();
+        this.isFixed = false;
     }
+
 
     @Override
     public String toString() {

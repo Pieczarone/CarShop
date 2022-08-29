@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html" charset="UTF-8"/>
+    <title>Title</title>
+</head>
+<body>
+    <div>
+        <h1>Result</h1>
+        <p th:text="'Make: '+${car.make}"></p>
+        <p th:text="'Registration: '+${car.registration}"></p>
+        <p th:text="'Description: '+${car.description}"></p>
+        <p th:text="'Year: '+${car.year}"></p>
+        <p th:text="'Color: '+${car.color}"></p>
+        <p th:text="'Arrive Date: '+${car.arriveDate}"></p>
+    </div>
+</body>
+</html>
