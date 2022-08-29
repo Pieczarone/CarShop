@@ -1,49 +1,58 @@
 package pl.mateuszlisinski.carshop.service;
-package org.codehaus.janino
 
-import ch.qos.logback.core.subst.Token;
-import com.google.gson.Gson;
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.core.type.TypeReference;
 import pl.mateuszlisinski.carshop.model.Car;
 
-import java.io.FileWriter;
-import java.io.Reader;
-import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class JsonFileOperations {
-    private static ArrayList<Car> cars = new ArrayList<Car>();
-    private static Gson gson = new Gson();
 
-    public static ArrayList<Car> read(){
-        try{
-            Reader reader = Files.newBufferedReader(Paths.get("src/main/resources/static/car.json"));
-            cars.add(gson.fromJson(reader, new <List<Car>>() {}.getType()));
-            System.out.println(cars);
-            reader.close();
+    private static File path = new File("src/main/resources/static/car.json");
+    private static ObjectMapper mapper = new ObjectMapper();
+    private static TypeReference<List<Car>> typeReference = new TypeReference<List<Car>>() {};
+
+    private List<Car> readIntoList() {
+        List<Car> cars = new ArrayList<Car>();
+        try {
+            InputStream inputStream = new FileInputStream(path);
+            cars = mapper.readValue(inputStream, typeReference);
+            inputStream.close();
+            return cars;
+
         }
-        catch (Exception e){
+        catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-
+        catch (JsonParseException e) {
+            e.printStackTrace();
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
         return cars;
     }
-
-    public static void write(Car car){
-        JsonFileOperations json = new JsonFileOperations();
-        cars = json.read();
-        cars.add(car);
+    private void write(Car car){
         try {
-            FileWriter writer = new FileWriter("src/main/resources/static/car.json");
-            gson.toJson(cars, writer);
-            writer.flush();
-            writer.close();
+            InputStream inputStream = new FileInputStream(path);
+            List<Car> cars = mapper.readValue(inputStream, typeReference);
+            cars.add(car);
+            mapper.writeValue(path, cars);
+            inputStream.close();
         }
-        catch (Exception e)
-        {
+        catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        catch (JsonParseException e) {
             e.printStackTrace();
         }
 
+        catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
+
