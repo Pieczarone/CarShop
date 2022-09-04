@@ -1,20 +1,70 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
+    <base href="/">
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Add Car</title>
+<!--    <link rel="stylesheet" href="../static/css/form.css" th:href="@{/css/form.css}"/>-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <style>
+        p{
+        margin left:20px;
+        }
+        .myalert{
+        color:red;
+        margin-top:10px;
+        }
+    </style>
 </head>
 <body>
+    <div th:replace="fragments/navbar :: navbar">
+
+    </div>
     <div>
-        <h1>Form</h1>
-        <form action="#" th:action="@{/carform}" th:object="${car}" method="post">
-            <p>Make: <input type="text" th:field="*{make}" /></p>
-            <p>Registration: <input type="text" th:field="*{registration}"/></p>
-            <p>Description: <input type="text" th:field="*{description}"/></p>
-            <p>Year: <input type="number" th:field="*{year}"/></p>
-            <p>Color: <input type="text" th:field="*{color}"/></p>
-            <p>Arrive date: <input type="date" th:field="*{arriveDate}"/></p>
-            <p><input type="submit" value="Submit"/><input type="reset" value="Reset"/></p>
+        <h1>Add Car</h1>
+        <form action="#" th:action="@{/carform}" th:object="${car}" method="post" class="form">
+            <div>
+                <label class="form-label" th:for="make">Make</label>
+                <input class="form-control" id="make_input_id" type="text" th:field="*{make}"/>
+                <div th:if="${#fields.hasErrors('make')}" th:class="'myalert'">
+                    <p th:each="err : ${#fields.errors('make')}" th:text="${err}"></p>
+                </div>
+            </div>
+            <div class="mb-3">
+                <label th:for="registration" class="form-label">Registration</label>
+                <input type="text" class="form-control" th:field="*{registration}"/>
+                <div th:if="${#fields.hasErrors('registration')}" th:class="'myalert'">
+                    <p th:each="err : ${#fields.errors('registration')}" th:text="${err}"></p>
+                </div>
+            </div>
+            <div class="mb-3">
+                <label th:for="Description" class="form-label">Description</label>
+                <input type="text" class="form-control" th:field="*{description}"/>
+                <div th:if="${#fields.hasErrors('description')}" th:class="'myalert'">
+                    <p th:each="err : ${#fields.errors('description')}" th:text="${err}"></p>
+                </div>
+            </div>
+            <div class="mb-3">
+                <p>Year: <input type="number" class="form-control" th:field="*{year}" min="1900" th:max="${currentYear}"/></p>
+                <div th:if="${#fields.hasErrors('year')}" th:class="'myalert'">
+                    <p th:each="err : ${#fields.errors('year')}" th:text="${err}"></p>
+                </div>
+            </div>
+            <div class="mb-3">
+                <p>Color: <input type="text" class="form-control" th:field="*{color}"/></p>
+                <div th:if="${#fields.hasErrors('color')}" th:class="'myalert'">
+                    <p th:each="err : ${#fields.errors('color')}" th:text="${err}"></p>
+                </div>
+            </div>
+            <div class="mb-3">
+                <p>Arrive date:</p> <input type="date" class="form-control" th:max="${currentDate}" th:field="*{arriveDate}"/>
+                <div th:if="${#fields.hasErrors('arriveDate')}" th:class="'myalert'">
+                    <p th:each="err : ${#fields.errors('arriveDate')}" th:text="${err}"></p>
+                </div>
+            </div>
+            <div class="mb-3">
+                <p><input type="submit" class="btn btn-primary" value="Submit"/><input type="reset" class="btn btn-primary" value="Reset"/></p>
+            </div>
         </form>
     </div>
 </body>
