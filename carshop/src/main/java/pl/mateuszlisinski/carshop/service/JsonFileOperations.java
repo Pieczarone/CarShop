@@ -15,14 +15,13 @@ public class JsonFileOperations {
     private static ObjectMapper mapper = new ObjectMapper();
     private static TypeReference<List<Car>> typeReference = new TypeReference<List<Car>>() {};
 
-    private List<Car> readIntoList() {
+    public List<Car> readIntoList() {
         List<Car> cars = new ArrayList<Car>();
         try {
             InputStream inputStream = new FileInputStream(path);
             cars = mapper.readValue(inputStream, typeReference);
             inputStream.close();
             return cars;
-
         }
         catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -35,7 +34,8 @@ public class JsonFileOperations {
         }
         return cars;
     }
-    private void write(Car car){
+
+    public void write(Car car){
         try {
             InputStream inputStream = new FileInputStream(path);
             List<Car> cars = mapper.readValue(inputStream, typeReference);
@@ -53,6 +53,57 @@ public class JsonFileOperations {
         catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public void fix(Car car){
+        try {
+
+            InputStream inputStream = new FileInputStream(path);
+            List<Car> cars = mapper.readValue(inputStream, typeReference);
+            for(int i=0;i<cars.size();i++){
+                if(cars.get(i).getId().equals(car.getId())){
+                    cars.get(i).setFixed(true);
+                }
+            }
+            mapper.writeValue(path, cars);
+            inputStream.close();
+        }
+        catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        catch (JsonParseException e) {
+            e.printStackTrace();
+        }
+
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public List<Car> search(String keyword) {
+        List<Car> cars = new ArrayList<Car>();
+        List<Car> searchedCars = new ArrayList<Car>();
+        try {
+            InputStream inputStream = new FileInputStream(path);
+            cars = mapper.readValue(inputStream, typeReference);
+            inputStream.close();
+            for(Car c: cars){
+                if(keyword.equalsIgnoreCase(c.getRegistration())||keyword.equalsIgnoreCase(c.getMake())){
+                    searchedCars.add(c);
+                }
+            }
+            return searchedCars;
+        }
+        catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        catch (JsonParseException e) {
+            e.printStackTrace();
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+        return searchedCars;
     }
 }
 
