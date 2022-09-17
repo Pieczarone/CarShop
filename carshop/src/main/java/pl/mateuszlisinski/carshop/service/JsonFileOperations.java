@@ -80,6 +80,32 @@ public class JsonFileOperations {
         }
     }
 
+    public void delete(Car car){
+        try {
+
+            InputStream inputStream = new FileInputStream(path);
+            List<Car> cars = mapper.readValue(inputStream, typeReference);
+            for(int i=0;i<cars.size();i++){
+                if(cars.get(i).getId().equals(car.getId())){
+                    cars.remove(cars.get(i));
+                }
+            }
+            mapper.writeValue(path, cars);
+            inputStream.close();
+        }
+        catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        catch (JsonParseException e) {
+            e.printStackTrace();
+        }
+
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
     public List<Car> search(String keyword) {
         List<Car> cars = new ArrayList<Car>();
         List<Car> searchedCars = new ArrayList<Car>();

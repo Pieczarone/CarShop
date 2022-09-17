@@ -30,14 +30,15 @@ public class Car implements Comparable<Car>{
     private boolean isFixed;
 
     public Car(String make, String registration, String description, int year, String color, Date arriveDate) {
-        this.id = UUID.randomUUID();
+        this();
+//        this.id = UUID.randomUUID();
         this.make = make;
         this.registration = registration;
         this.description = description;
         this.year = year;
         this.color = color;
         this.arriveDate = arriveDate;
-        this.isFixed = false;
+//        this.isFixed = false;
     }
     public Car(){
         this.id = UUID.randomUUID();
