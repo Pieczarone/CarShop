@@ -16,10 +16,6 @@ import java.util.Calendar;
 public class CarController {
     private static JsonFileOperations json = new JsonFileOperations();
     private static Sort sort = new Sort();
-    @GetMapping(value = "/")
-    public String getIndex(Model model){
-        return "index";
-    }
 
     @GetMapping("/carform")
     public String carForm(Model model){
@@ -49,6 +45,13 @@ public class CarController {
     public String carFix(@ModelAttribute Car car, Model model) {
         model.addAttribute("car", car);
         json.fix(car);
+        return "success";
+    }
+
+    @RequestMapping(value = "/carsdelete", method = RequestMethod.POST)
+    public String carDelete(@ModelAttribute Car car, Model model) {
+        model.addAttribute("car", car);
+        json.delete(car);
         return "success";
     }
 

@@ -20,6 +20,7 @@
                     <th>Color</th>
                     <th>Arrive Date</th>
                     <th>Is Fixed</th>
+                    <th>Delete</th>
                     <th>Fix</th>
                 </tr>
                 <tr th:each="car : ${cars}">
@@ -31,6 +32,10 @@
                         <td th:text="${car.color}"></td>
                         <td th:text="${#dates.format(car.arriveDate, 'dd-MM-yyyy')}"></td>
                         <td th:text="${car.isFixed}"></td>
+                        <form action="#" th:action="@{/carsdelete}" th:object="${car}" method="post">
+                        <input type="hidden" th:value="${car.id}" name="id"/>
+                        <td><input type="submit" class="btn btn-primary" value="Delete"/></td>
+                    </form>
                     <span th:unless="${car.isFixed}">
                         <form action="#" th:action="@{/cars}" th:object="${car}" method="post">
                             <input type="hidden" th:value="${car.id}" name="id"/>
