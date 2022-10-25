@@ -5,6 +5,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import pl.mateuszlisinski.carshop.model.Car;
+import pl.mateuszlisinski.carshop.service.DatabaseOperations;
 import pl.mateuszlisinski.carshop.service.JsonFileOperations;
 import pl.mateuszlisinski.carshop.service.Sort;
 
@@ -14,6 +15,7 @@ import java.util.Calendar;
 
 @Controller
 public class CarController {
+    private static DatabaseOperations db = new DatabaseOperations();
     private static JsonFileOperations json = new JsonFileOperations();
     private static Sort sort = new Sort();
 
@@ -31,39 +33,39 @@ public class CarController {
             return "carform";
         }
         model.addAttribute("car", car);
-        json.write(car);
+        db.addCar(car);
         return "result";
     }
 
     @RequestMapping(value = "/cars", method = RequestMethod.GET)
     public String listCars (Model model){
-        model.addAttribute("cars", sort.sortDate(json.readIntoList()));
+        model.addAttribute("cars", sort.sortDate(db.getCars()));
         return "cars";
     }
 
     @RequestMapping(value = "/cars", method = RequestMethod.POST)
     public String carFix(@ModelAttribute Car car, Model model) {
         model.addAttribute("car", car);
-        json.fix(car);
+        db.fixCar(car.getId());
         return "success";
     }
 
     @RequestMapping(value = "/carsdelete", method = RequestMethod.POST)
     public String carDelete(@ModelAttribute Car car, Model model) {
         model.addAttribute("car", car);
-        json.delete(car);
+        db.deleteCar(car.getId());
         return "success";
     }
 
     @RequestMapping("/carsnotfixed")
     public String listNonFixedCars (Model model){
-        model.addAttribute("cars", sort.sortDate(json.readIntoList()));
+        model.addAttribute("cars", sort.sortDate(db.getNotFixedCars()));
         return "carsnotfixed";
     }
 
     @PostMapping("search")
     public String search(@RequestParam("keyword")String keyword, Model model){
-        model.addAttribute("cars", json.search(keyword));
+        model.addAttribute("cars", db.searchCars(keyword));
         return "cars";
     }
 }
